@@ -69,9 +69,7 @@ export const Post = (props: Props) => {
     //------------------------------------------------------------------EDIT PART
     const goToEdit = () => {
         console.log("in post.tsx setting edit mode")
-        setEditedPostDescription(post.description)
-        setEditedPostTitle(post.title)
-        console.log(post)
+        console.log(editedPostTitle, editedPostDescription)
         setEditMode(prev => !prev)
     }
 
@@ -94,10 +92,15 @@ export const Post = (props: Props) => {
         // })
     }
 
+    // useEffect(() => {
+    //     console.log("in post.tsx in useEffect...")
+    //     getLikes()
+    // }, [])
     useEffect(() => {
-        console.log("in post.tsx in useEffect...")
-        getLikes()
-    }, [])
+        console.log('UPDATE!!!!!')
+        setEditedPostDescription(post.description)
+        setEditedPostTitle(post.title)
+    }, [editMode])
 
     console.log('in Post', post.id, likes)
 
@@ -124,13 +127,12 @@ export const Post = (props: Props) => {
         // <form className="post-container">
         <form className="post-container" onSubmit={handleSubmit(onEditPost)}>
             <p>Editing a post</p>
-            <input {...register("description")} placeholder="Title..." value={editedPostTitle} onChange={(e) => setEditedPostTitle(e.target.value)} />
+            <input {...register("title")} placeholder="Title..." value={editedPostTitle} onChange={(e) => setEditedPostTitle(e.target.value)} />
             <p className="edit-post-form-error">{errors.title?.message}</p>
-            <textarea {...register("description")} placeholder="Description..." onChange={(e) => setEditedPostDescription(e.target.value)} value={editedPostDescription} />
-            {/* <textarea placeholder="Description..."  onChange={(e)=>setEditedPostDescription(e.target.value)} value={editedPostDescription}  {...register("description")} /> */}
+            <textarea {...register("description")} onChange={(e) => setEditedPostDescription(e.target.value)} placeholder="Description..." value={editedPostDescription} />
             <p className="edit-post-form-error">{errors.description?.message}</p>
             <input type="submit" className="edit-post-form-btn" />
-            {isUserAuthor && <button onClick={goToEdit} type="button">go back</button>}
+            <button onClick={goToEdit} type="button">go back</button>
         </form>
     )
 }
