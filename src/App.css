@@ -57,6 +57,7 @@ nav{
   background-color: bisque;
   padding: 1rem 1rem;
   box-shadow: 0 0 1rem #1112;
+  margin-bottom: 1rem;
 }
 
 .create-post-form-error{
@@ -72,9 +73,6 @@ main{
   padding: 5rem 0;
 }
 
-.post-container{
-  margin-bottom: 1rem;
-}
 
 .post-btn-like{
   background-color: transparent;

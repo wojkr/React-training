@@ -6,7 +6,7 @@ import { db, auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 
-interface CreateFormData {
+export interface CreateFormData {
     title: string,
     description: string
 }

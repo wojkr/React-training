@@ -17,7 +17,7 @@ export const Navbar = () => {
             }
             <Link className='nav-links-link' to="/posts">Posts</Link>
             {user &&
-                <Link className='nav-links-link' to="/createpost">Create post</Link>
+                <Link className='nav-links-link' to="/posts">Create post</Link>
             }
         </div>
         {user &&
