@@ -3,11 +3,8 @@ import { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../../config/firebase"
 import { postSchema } from "./posts"
+import { FormEditPost } from "./formEditPost"
 
-import { yupResolver } from "@hookform/resolvers/yup"
-import { CreateFormData as EditedData } from "./create-form"
-import { useForm } from "react-hook-form"
-import * as yup from "yup"
 
 interface Props {
     post: postSchema
@@ -25,7 +22,7 @@ export const Post = (props: Props) => {
     const [editedPostTitle, setEditedPostTitle] = useState(post.title)
     const [user] = useAuthState(auth)
     const [likes, setLikes] = useState<Like[] | null>(null);
-    const [editMode, setEditMode] = useState<Boolean>(false)
+    const [editMode, setEditMode] = useState(false)
     const likesRef = collection(db, "likes")
     //-----------------------------------------------------------------THE POST PART
     const likesDoc = query(likesRef, where("postId", "==", post.id))
@@ -66,31 +63,12 @@ export const Post = (props: Props) => {
     const hasUserLiked = likes?.find(l => l.userId === user?.uid)
 
     const isUserAuthor = (post.userId === user?.uid)
-    //------------------------------------------------------------------EDIT PART
     const goToEdit = () => {
         console.log("in post.tsx setting edit mode")
         console.log(editedPostTitle, editedPostDescription)
         setEditMode(prev => !prev)
     }
 
-
-    const schema = yup.object().shape({
-        title: yup.string().required("you must add a title."),
-        description: yup.string().required("you must add a description.")
-    })
-
-    const { register, handleSubmit, formState: { errors } } = useForm<EditedData>({
-        resolver: yupResolver(schema)
-    });
-
-    const onEditPost = async (data: EditedData) => {
-        console.log(data)
-        // await addDoc(postsRef, {
-        //     ...data,
-        //     username: user?.displayName,
-        //     userId: user?.uid
-        // })
-    }
 
     // useEffect(() => {
     //     console.log("in post.tsx in useEffect...")
@@ -125,14 +103,21 @@ export const Post = (props: Props) => {
         :
         //-----------------------------------------EDIT
         // <form className="post-container">
-        <form className="post-container" onSubmit={handleSubmit(onEditPost)}>
-            <p>Editing a post</p>
-            <input {...register("title")} placeholder="Title..." value={editedPostTitle} onChange={(e) => setEditedPostTitle(e.target.value)} />
-            <p className="edit-post-form-error">{errors.title?.message}</p>
-            <textarea {...register("description")} onChange={(e) => setEditedPostDescription(e.target.value)} placeholder="Description..." value={editedPostDescription} />
-            <p className="edit-post-form-error">{errors.description?.message}</p>
-            <input type="submit" className="edit-post-form-btn" />
-            <button onClick={goToEdit} type="button">go back</button>
-        </form>
+        // <form className="post-container" onSubmit={handleSubmit(onEditPost)}>
+        //     <p>Editing a post</p>
+        //     <input {...register("title")} placeholder="Title..." value={editedPostTitle} onChange={(e) => setEditedPostTitle(e.target.value)} />
+        //     <p className="edit-post-form-error">{errors.title?.message}</p>
+        //     <textarea {...register("description")} onChange={(e) => setEditedPostDescription(e.target.value)} placeholder="Description..." value={editedPostDescription} />
+        //     <p className="edit-post-form-error">{errors.description?.message}</p>
+        //     <input type="submit" className="edit-post-form-btn" />
+        //     <button onClick={goToEdit} type="button">go back</button>
+        <FormEditPost
+            setEditMode={setEditMode}
+            editedPostTitle={editedPostTitle}
+            setEditedPostTitle={setEditedPostTitle}
+            editedPostDescription={editedPostDescription}
+            setEditedPostDescription={setEditedPostDescription}
+        />
+        // </form>
     )
 }
