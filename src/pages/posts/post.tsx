@@ -55,7 +55,7 @@ export const Post = (props: Props) => {
 
     useEffect(() => {
         getLikes()
-    })
+    }, [])
 
     return <section className="post-container">
         <div className="post-title">
