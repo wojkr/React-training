@@ -10,8 +10,8 @@ export const Login = () => {
         navigate("/")
     }
 
-    return <main>
-        <p>Sign in with google</p>
-        <button onClick={signInWithGoogle}>Sign in with Google</button>
+    return <main className="container container-bigger">
+        <h1>Login</h1>
+        <button className="login-btn" onClick={signInWithGoogle}>Sign in with Google</button>
     </main>
 }

@@ -13,11 +13,11 @@ export interface postSchema {
 }
 
 export const Posts = () => {
+
     const [postsList, setPostsList] = useState<postSchema[] | null>(null);//array of postSchema or null, then added in mapping!
     const postsRef = collection(db, "posts")
     const getPosts = async () => {
         try {
-
             const data = await getDocs(postsRef)
             setPostsList(data.docs.map(d => ({ ...d.data(), id: d.id })) as postSchema[])
         } catch (err) {
@@ -31,8 +31,10 @@ export const Posts = () => {
     return (<main>
 
         <CreateForm />
-        {postsList?.map(post => (
-            <Post post={post} key={post.id} />
-        ))}
-    </main>)
+        {
+            postsList?.map(post => (
+                <Post post={post} key={post.id} />
+            ))
+        }
+    </main >)
 }

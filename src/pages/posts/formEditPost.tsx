@@ -57,7 +57,7 @@ export const FormEditPost = ({ setEditMode, setNewPost, setOldPost, oldPost, new
             <textarea {...register("description")} onChange={(e) => setNewPost({ ...newPost, description: e.target.value })} placeholder="Description..." value={newPost.description} />
             <p className="edit-post-form-error">{errors.description?.message}</p>
             <input type="submit" className="edit-post-form-btn" />
-            <button onClick={onNoEdit} type="button">go back</button>
+            <button className="edit-post-form-btn-back" onClick={onNoEdit} type="button">go back</button>
         </form>
     )
 }

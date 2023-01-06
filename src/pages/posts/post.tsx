@@ -97,7 +97,7 @@ export const Post = (props: Props) => {
             </div>
             <button onClick={hasUserLiked ? removeLike : addLike} className="post-btn-like">{hasUserLiked ? <>&#128078;</> : <>&#128077;</>}</button>
             {likes && <p>Likes: {likes?.length}</p>}
-            {isUserAuthor && <button onClick={goToEdit}>Edit {editMode ? 'editMode ON' : 'editMode OFF'}</button>}
+            {isUserAuthor && <button className="create-post-form-btn" onClick={goToEdit}>Edit</button>}
         </section>
         :
         //-----------------------------------------EDIT

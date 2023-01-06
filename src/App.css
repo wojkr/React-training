@@ -1,5 +1,6 @@
 *{
   color: #113;
+  text-decoration: none;
 }
 body{
   margin: 0;
@@ -12,6 +13,7 @@ nav{
   flex-direction: row;
   background-color: bisque;
   padding: 0rem 5rem;
+  box-shadow: 0 0 .5rem #1112;
 }
 
 .nav-links{
@@ -35,23 +37,32 @@ nav{
   height: 2rem;
   border-radius: 50%; 
   margin-left: .5rem ;
+  box-shadow: 0 0 .3rem #113c;
 }
-.nav-user-btn, .create-post-form-btn{
+.nav-user-btn, .create-post-form-btn,.edit-post-form-btn,.edit-post-form-btn-back,.login-btn,.Link{
   border: none;
   border-radius: 3%;
   background-color: #113;
   color: bisque;
   padding: .5rem .5rem;
-  margin-left: 1rem;
   cursor: pointer;
   font-weight:bolder;
   transition: 300ms;
 }
-.nav-user-btn:hover, .create-post-form-btn:hover{
+.nav-user-btn{
+  margin-left: 1rem;
+}
+.nav-user-btn:hover, .create-post-form-btn:hover,.edit-post-form-btn:hover,.login-btn:hover,.Link:hover{
   background-color: #113c;
 }
+.edit-post-form-btn-back{
+  background-color: #511;
+}
+.edit-post-form-btn-back:hover{
+  background-color: #511c;
+}
 
-.create-post-form,.post-container{
+.create-post-form,.post-container,.container{
   border-radius: 2px;
   color: #113;
   background-color: bisque;
@@ -69,6 +80,7 @@ main{
   flex-grow: 1;
   width: 80%;
   margin: auto;
+  margin-top: 5rem;
   text-align: center;
   padding: 5rem 0;
 }
@@ -91,7 +103,21 @@ main{
   font-weight:normal;
 }
 
+.container-bigger{
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  min-height: 6rem;
+  text-align: center;
+}
+
 hr{
   border: none;
   border-bottom: 1px solid #113c;
+}
+
+.border-bottom{
+  padding-bottom: 1rem;
+  border-bottom: #113c 1px solid;
+  margin-bottom: 1rem;
 }
