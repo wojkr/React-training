@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, query, where } from "firebase/firestore"
 import { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../../config/firebase"
@@ -14,22 +14,31 @@ interface Like {
     userId: string,
     likeId: string
 }
+interface postSchema1 {
+    id: string,
+    userId: string,
+    username: string,
+    description: string,
+    title: string
+}
 
 export const Post = (props: Props) => {
-    const { post } = props
-    const [editedPost, setEditedPost] = useState(post)
-    const [editedPostDescription, setEditedPostDescription] = useState(post.description)
-    const [editedPostTitle, setEditedPostTitle] = useState(post.title)
+    let { post } = props
+    const [newPost, setNewPost] = useState(post)
+    const [oldPost, setOldPost] = useState(post)
+
     const [user] = useAuthState(auth)
+
     const [likes, setLikes] = useState<Like[] | null>(null);
-    const [editMode, setEditMode] = useState(false)
     const likesRef = collection(db, "likes")
+
+    const [editMode, setEditMode] = useState<boolean>(false)
+
     //-----------------------------------------------------------------THE POST PART
     const likesDoc = query(likesRef, where("postId", "==", post.id))
     const getLikes = async () => {
         console.log("in post.tsx -- FIREBASE -- gettingDoc")
         const data = await getDocs(likesDoc)
-        // console.log(data.docs.map(d => ({ ...d.data(), id: d.id })))
         setLikes(data.docs.map(d => ({ userId: d.data().userId, likeId: d.id })))
     }
 
@@ -64,36 +73,26 @@ export const Post = (props: Props) => {
 
     const isUserAuthor = (post.userId === user?.uid)
     const goToEdit = () => {
-        console.log("in post.tsx setting edit mode")
-        console.log(editedPostTitle, editedPostDescription)
         setEditMode(prev => !prev)
     }
 
-
-    // useEffect(() => {
-    //     console.log("in post.tsx in useEffect...")
-    //     getLikes()
-    // }, [])
     useEffect(() => {
-        console.log('UPDATE!!!!!')
-        setEditedPostDescription(post.description)
-        setEditedPostTitle(post.title)
-    }, [editMode])
-
-    console.log('in Post', post.id, likes)
+        console.log("in post.tsx in useEffect...")
+        getLikes()
+    }, [])
 
     return (!editMode ?
         //-----------------------------------------POST
-        <section className="post-container" key={post.id}>
+        <section className="post-container" key={newPost.id}>
             <div className="post-title">
                 <p className="post-title-text">
-                    <span className="post-title-text-username">@{post.username}:</span> {post.title}
+                    <span className="post-title-text-username">@{newPost.username}:</span> {newPost.title}
                 </p>
             </div>
             <hr />
             <div className="post-description">
                 <p className="post-description-text">
-                    {post.description}
+                    {newPost.description}
                 </p>
             </div>
             <button onClick={hasUserLiked ? removeLike : addLike} className="post-btn-like">{hasUserLiked ? <>&#128078;</> : <>&#128077;</>}</button>
@@ -102,22 +101,13 @@ export const Post = (props: Props) => {
         </section>
         :
         //-----------------------------------------EDIT
-        // <form className="post-container">
-        // <form className="post-container" onSubmit={handleSubmit(onEditPost)}>
-        //     <p>Editing a post</p>
-        //     <input {...register("title")} placeholder="Title..." value={editedPostTitle} onChange={(e) => setEditedPostTitle(e.target.value)} />
-        //     <p className="edit-post-form-error">{errors.title?.message}</p>
-        //     <textarea {...register("description")} onChange={(e) => setEditedPostDescription(e.target.value)} placeholder="Description..." value={editedPostDescription} />
-        //     <p className="edit-post-form-error">{errors.description?.message}</p>
-        //     <input type="submit" className="edit-post-form-btn" />
-        //     <button onClick={goToEdit} type="button">go back</button>
         <FormEditPost
             setEditMode={setEditMode}
-            editedPostTitle={editedPostTitle}
-            setEditedPostTitle={setEditedPostTitle}
-            editedPostDescription={editedPostDescription}
-            setEditedPostDescription={setEditedPostDescription}
+            oldPost={oldPost}
+            newPost={newPost}
+            setNewPost={setNewPost}
+            setOldPost={setOldPost}
+            postId={post.id}
         />
-        // </form>
     )
 }
